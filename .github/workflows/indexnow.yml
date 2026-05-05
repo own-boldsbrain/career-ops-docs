@@ -1,0 +1,74 @@
+name: IndexNow ping + schema validation
+
+# Runs after every push to main. Waits for Vercel to redeploy, validates
+# the JSON-LD graph is live with the expected shape, then pings IndexNow
+# (Bing + Yandex re-crawl immediately, free).
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for Vercel deploy
+        run: sleep 90
+
+      - name: Validate JSON-LD is live with expected shape
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, re, sys, urllib.request
+
+          html = urllib.request.urlopen('https://career-ops.org/').read().decode()
+          matches = re.findall(
+              r'<script[^>]*application/ld\+json[^>]*>([\s\S]*?)</script>',
+              html,
+          )
+          if not matches:
+              sys.exit('FAIL: no JSON-LD <script> found in HTML')
+
+          d = json.loads(matches[0])
+          graph = d.get('@graph', [])
+          types = [n.get('@type') for n in graph]
+          for t in ('WebSite', 'SoftwareSourceCode'):
+              if t not in types:
+                  sys.exit(f'FAIL: missing @type {t}')
+
+          for n in graph:
+              if n.get('@type') == 'SoftwareSourceCode':
+                  creator_id = (n.get('creator') or {}).get('@id')
+                  if creator_id != 'https://santifer.io/#person':
+                      sys.exit(f'FAIL: SoftwareSourceCode.creator.@id = {creator_id!r}')
+                  if not n.get('interactionStatistic'):
+                      sys.exit('FAIL: SoftwareSourceCode.interactionStatistic missing')
+
+          print('OK: JSON-LD live with WebSite + SoftwareSourceCode + creator @id + interactionStatistic')
+          PY
+
+      - name: Ping IndexNow (Bing, Yandex)
+        run: |
+          curl -fsS -X POST https://api.indexnow.org/IndexNow \
+            -H "Content-Type: application/json" \
+            -d '{
+              "host": "career-ops.org",
+              "key": "1befaf1616dd4dc08b51ecb5ec601059",
+              "keyLocation": "https://career-ops.org/1befaf1616dd4dc08b51ecb5ec601059.txt",
+              "urlList": [
+                "https://career-ops.org/",
+                "https://career-ops.org/docs",
+                "https://career-ops.org/docs/introduction/what-is-career-ops",
+                "https://career-ops.org/docs/introduction/guides/scan-job-portals",
+                "https://career-ops.org/docs/introduction/guides/apply-for-a-job",
+                "https://career-ops.org/docs/introduction/guides/batch-evaluate-offers",
+                "https://career-ops.org/docs/introduction/guides/set-up-playwright",
+                "https://career-ops.org/llms.txt",
+                "https://career-ops.org/llms-full.txt"
+              ]
+            }'
+          echo
+          echo "OK: IndexNow notified"

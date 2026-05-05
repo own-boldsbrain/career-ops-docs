@@ -9,13 +9,14 @@ const inter = Inter({
   subsets: ['latin'],
 });
 
-export default function Layout({ children }: LayoutProps<'/'>) {
+export default async function Layout({ children }: LayoutProps<'/'>) {
+  const schema = await siteSchema();
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
       <body className="framework relative flex min-h-screen flex-col">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema()) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
         <RootProvider>{children}</RootProvider>
         <Analytics />

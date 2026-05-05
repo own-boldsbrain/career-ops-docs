@@ -1,7 +1,10 @@
 // Schema.org JSON-LD emitted in the root layout.
 // Person entity is referenced by @id (https://santifer.io/#person), never duplicated here —
 // santifer.io is the canonical entity hub. career-ops.org is the work.
-export function siteSchema() {
+import { getProjectStats } from './stats';
+
+export async function siteSchema() {
+  const stats = await getProjectStats();
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -36,6 +39,26 @@ export function siteSchema() {
           priceCurrency: 'USD',
           availability: 'https://schema.org/InStock',
         },
+        interactionStatistic: [
+          {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/LikeAction',
+            userInteractionCount: stats.stars,
+            name: 'GitHub stars',
+          },
+          {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/ShareAction',
+            userInteractionCount: stats.forks,
+            name: 'GitHub forks',
+          },
+          {
+            '@type': 'InteractionCounter',
+            interactionType: 'https://schema.org/JoinAction',
+            userInteractionCount: stats.discordMembers,
+            name: 'Discord members',
+          },
+        ],
       },
     ],
   };
