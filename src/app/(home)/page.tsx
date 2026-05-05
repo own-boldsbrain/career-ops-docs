@@ -175,8 +175,8 @@ export default async function HomePage() {
             <h3 className="font-medium tracking-tight text-xl lg:text-2xl mb-6">Built from the job search trenches.</h3>
             <p className="mb-8">
               CareerOps was created by{' '}
-              <a href="https://x.com/santifer" target="_blank" rel="noreferrer noopener" className="text-brand font-medium hover:underline">
-                Santifer
+              <a href="https://santifer.io/about" target="_blank" rel="me noreferrer noopener" className="text-brand font-medium hover:underline">
+                Santiago Fernández de Valderrama
               </a>{' '}
               to evaluate over 740 job offers and land a Head of Applied AI role. He decided to open source it — now it&apos;s powered by passion and the open source community.
             </p>

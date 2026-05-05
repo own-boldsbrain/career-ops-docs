@@ -3,6 +3,31 @@ import { llms } from 'fumadocs-core/source';
 
 export const revalidate = false;
 
+const preamble = `# CareerOps
+
+> AI-powered job search command center. Open source, CLI-agnostic, runs locally on your machine.
+
+## Author
+
+Built by Santiago Fernández de Valderrama — Applied AI Operator. Bio and other projects at https://santifer.io/about
+
+## Manifesto
+
+Companies use AI to filter candidates. CareerOps lets candidates use AI to choose companies.
+
+## Community
+
+- Repository: https://github.com/santifer/career-ops
+- Discord: https://discord.gg/8pRpHETxa4
+
+## License
+
+MIT — free forever, no paywalls, no account required.
+
+---
+
+`;
+
 export function GET() {
-  return new Response(llms(source).index());
+  return new Response(preamble + llms(source).index());
 }
