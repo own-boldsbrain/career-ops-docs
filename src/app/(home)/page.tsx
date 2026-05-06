@@ -100,7 +100,7 @@ export default async function HomePage() {
           alt="career-ops terminal interface showing the job pipeline tracker"
           width={1628}
           height={1044}
-          className="absolute top-[540px] left-[25%] max-w-[1400px] rounded-xl lg:top-[440px] block [animation:fade-in-delayed_700ms_ease_400ms_both] [mask-image:linear-gradient(to_right,transparent_0%,black_8%)]"
+          className="absolute top-[58%] left-[25%] max-w-[1400px] rounded-xl block [animation:fade-in-delayed_700ms_ease_400ms_both] [mask-image:linear-gradient(to_right,transparent_0%,black_8%)]"
           priority
         />
         <div className="flex flex-col z-2 px-4 size-full md:p-12 max-md:items-center max-md:text-center">
@@ -122,7 +122,9 @@ export default async function HomePage() {
               Perplexity index. Carries the searchable description: 'AI-powered
               job search', 'open source', 'CLI', 'local-first'. */}
           <h1 className="mb-8 max-w-xl text-base font-normal text-fd-muted-foreground md:text-lg">
-            Open source AI-powered job search. Runs in your CLI. Your data, your machine.
+            Open source AI-powered job search.
+            <br />
+            Runs in your CLI. Your data, your machine.
           </h1>
           <div className="flex flex-row items-center gap-4 flex-wrap w-fit">
             <Link href="/docs" className={cn(buttonVariants(), 'max-sm:text-sm')}>
@@ -204,8 +206,11 @@ export default async function HomePage() {
 
       {/* Manifesto blockquote — canonical signature thesis in first person.
           Same wording on every surface (home, /llms.txt, future /about,
-          schema). It's the entity anchor LLMs cite verbatim — do not vary. */}
+          schema). It's the entity anchor LLMs cite verbatim — do not vary.
+          Hairline dividers (top + bottom, narrow centered) frame the cita
+          as an editorial pull-quote — pattern used by NYT, The Atlantic. */}
       <div className="mx-auto w-full max-w-[1100px] px-6 md:px-12 mt-16 lg:mt-24">
+        <hr className="mx-auto w-32 lg:w-40 border-t-2 border-fd-foreground/20 mb-10 lg:mb-14" />
         <blockquote className="text-center">
           <p
             className={`${instrumentSerif.className} text-3xl md:text-4xl xl:text-5xl leading-tight text-fd-foreground`}
@@ -264,28 +269,37 @@ export default async function HomePage() {
             </span>
           </footer>
         </blockquote>
+        <hr className="mx-auto w-32 lg:w-40 border-t-2 border-fd-foreground/20 mt-10 lg:mt-14" />
       </div>
 
       <div className="grid grid-cols-1 gap-10 mt-16 lg:mt-24 px-6 mx-auto w-full max-w-[1400px] md:px-12 lg:grid-cols-2">
-        <p className="text-xl tracking-tight leading-snug font-light col-span-full md:text-2xl xl:text-3xl">
+        {/* H2 statement — teaser before the proof. Instrument Serif regular,
+            same family as hero/100%-Open-Source/feature cards/CTA. The
+            antecedent of the four h3 cards below. */}
+        <h2
+          className={`${instrumentSerifRegular.className} col-span-full text-center text-3xl tracking-tight leading-tight md:text-4xl xl:text-5xl`}
+        >
           Turn any AI coding CLI into a full job search{' '}
-          <span className="text-brand font-medium">command center</span>. Instead of{' '}
-          <span className="text-brand font-medium">manually</span>{' '}tracking applications in a
-          spreadsheet, you get an AI-powered pipeline that scans portals, generates tailored PDFs
-          and tracks everything for you. It&apos;s like having a career coach for your job search,
-          but{' '}<span className="text-brand font-medium">without the cost</span>.
-        </p>
+          <span className="text-brand">command center</span>.
+        </h2>
 
-        <div className="relative h-[400px] lg:h-[480px] rounded-2xl col-span-full overflow-hidden flex items-center justify-center p-4 md:p-8">
+        {/* Demo container — terminal animation + side-by-side sub-text cards
+            ALL composed over the halftone dither bg. Container ampliado para
+            acomodar terminal arriba + grid 2-col de cards (mechanism, analogy)
+            abajo. Cards mantienen el card style del feature grid (consistency)
+            pero text left-aligned para prose readability. */}
+        <div className="relative min-h-[520px] lg:min-h-[560px] rounded-2xl col-span-full overflow-hidden flex flex-col items-center justify-center gap-6 lg:gap-8 p-6 md:p-10">
           <Image
             src="/buffalo-dither.png"
             loading="lazy"
             alt=""
             width={1628}
             height={1044}
-            className="absolute inset-0 size-full object-cover object-[80%_bottom] -z-1"
+            className="absolute inset-0 size-full object-cover object-center -z-1"
           />
-          <div className="mx-auto w-full max-w-[800px] p-2 bg-fd-card text-fd-card-foreground border rounded-2xl shadow-lg">
+
+          {/* Terminal box centered */}
+          <div className="w-full max-w-[800px] p-2 bg-fd-card text-fd-card-foreground border rounded-2xl shadow-lg">
             <div className="flex flex-row gap-2">
               <span className="text-brand content-center font-mono font-bold uppercase border-2 border-brand/50 px-2 rounded-xl text-sm">
                 Try it out
@@ -304,16 +318,55 @@ export default async function HomePage() {
               <CreateAppAnimation className="p-2 text-fd-secondary-foreground/80" />
             </div>
           </div>
+
+          {/* Mechanism card — single dark card inside the dither container,
+              compact dark bg + white text for legibility. */}
+          <div className="w-full max-w-[800px] rounded-2xl bg-black/85 backdrop-blur-sm p-5 lg:p-6 text-white text-sm md:text-base leading-relaxed">
+            <p>
+              Instead of manually tracking applications in a spreadsheet, you get an AI-powered
+              pipeline that scans portals, generates tailored PDFs and tracks everything for you.
+            </p>
+          </div>
         </div>
 
+        {/* Analogy mini-quote — bridges demo above and feature grid below.
+            Instrument Serif italic (smaller cousin of the canonical manifesto
+            blockquote). "without the cost" carries the hand-drawn underline:
+            it's the user-facing benefit, the punchline of the analogy. */}
+        <p
+          className={`${instrumentSerif.className} col-span-full text-center text-2xl md:text-3xl xl:text-4xl leading-tight text-fd-foreground my-4 lg:my-8`}
+        >
+          &ldquo;It&apos;s like having a career coach for your job search, but{' '}
+          <span className="relative inline-block text-brand">
+            without the cost
+            <svg
+              aria-hidden="true"
+              className="absolute left-0 -bottom-2 w-full h-[0.18em] overflow-visible"
+              viewBox="0 0 200 8"
+              preserveAspectRatio="none"
+              fill="none"
+            >
+              <path
+                d="M 2 5 C 30 2, 70 7, 110 4 S 170 6, 198 3"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                vectorEffect="non-scaling-stroke"
+              />
+            </svg>
+          </span>
+          .&rdquo;
+        </p>
+
         {/* Feature grid — 4 cards forming a 2x2 in lg+: technical (AI-Native),
-            philosophical (Not spray), practical (45+ portals), human (Community). */}
+            philosophical (Not spray), practical (45+ portals), human (Community).
+            Each card title is h3 (children of the h2 statement above). */}
         <div className="rounded-2xl text-sm p-6 bg-origin-border shadow-lg border bg-fd-card relative flex flex-col overflow-hidden z-2 min-h-[340px]">
-          <h2
+          <h3
             className={`${instrumentSerifRegular.className} tracking-tight text-2xl lg:text-3xl mb-6`}
           >
             AI-Native &amp; Agnostic
-          </h2>
+          </h3>
           <p className="mb-6">
             Works with any coding CLI — Claude Code, Codex, OpenCode, Gemini CLI, Qwen CLI, GitHub
             Copilot. Built on the Open Agent Skill Standard.
@@ -335,11 +388,11 @@ export default async function HomePage() {
         </div>
 
         <div className="rounded-2xl text-sm p-6 bg-origin-border shadow-lg border bg-fd-card bg-gradient-to-bl from-brand/10 via-transparent to-transparent min-h-[340px]">
-          <h2
+          <h3
             className={`${instrumentSerifRegular.className} tracking-tight text-2xl lg:text-3xl mb-6`}
           >
             Not spray-and-pray.
-          </h2>
+          </h3>
           <p className="mb-6">
             The system refuses to recommend applying to anything scoring below 4.0 out of 5. Every
             evaluation is a hard filter — not a nudge.
@@ -353,11 +406,11 @@ export default async function HomePage() {
         </div>
 
         <div className="rounded-2xl text-sm p-6 bg-origin-border shadow-lg border bg-fd-card bg-gradient-to-tr from-brand/10 via-transparent to-transparent min-h-[340px] flex flex-col">
-          <h2
+          <h3
             className={`${instrumentSerifRegular.className} tracking-tight text-2xl lg:text-3xl mb-6`}
           >
             45+ company portals. Zero manual searching.
-          </h2>
+          </h3>
           <p className="mb-6">
             Pre-configured scrapers check career pages across 45+ companies and job aggregators on
             demand. Run <code className="font-mono text-brand">/career-ops scan</code> and get a
@@ -375,11 +428,11 @@ export default async function HomePage() {
             corner (top-left → to-br) so all four cards have distinct
             personality without copy-paste. */}
         <div className="rounded-2xl text-sm p-6 bg-origin-border shadow-lg border bg-fd-card bg-gradient-to-br from-brand/10 via-transparent to-transparent min-h-[340px] flex flex-col">
-          <h2
+          <h3
             className={`${instrumentSerifRegular.className} tracking-tight text-2xl lg:text-3xl mb-6`}
           >
             Shipped with the community.
-          </h2>
+          </h3>
           <p className="mb-6">
             career-ops grows through pull requests from people running real job searches. Issues get
             triaged in Discord, fixes ship the same week. You don&apos;t just use the tool — you
