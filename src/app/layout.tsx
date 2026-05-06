@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { siteSchema } from '@/lib/schema';
+import { CoMark } from '@/components/co-mark';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,18 +22,21 @@ export default async function Layout({ children }: LayoutProps<'/'>) {
         <RootProvider>{children}</RootProvider>
         <footer className="border-t py-8 text-sm text-fd-muted-foreground">
           <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:px-12">
-            <p>
-              Built by{' '}
-              <a
-                href="https://santifer.io/about"
-                rel="me noreferrer noopener"
-                title="Santiago Fernández de Valderrama"
-                className="text-fd-foreground hover:underline"
-              >
-                santifer
-              </a>{' '}
-              · Open source · MIT
-            </p>
+            <div className="flex items-center gap-2.5">
+              <CoMark size={20} />
+              <p>
+                Built by{' '}
+                <a
+                  href="https://santifer.io/about"
+                  rel="me noreferrer noopener"
+                  title="Santiago Fernández de Valderrama"
+                  className="text-fd-foreground hover:underline"
+                >
+                  santifer
+                </a>{' '}
+                · Open source · MIT
+              </p>
+            </div>
             <nav className="flex flex-row flex-wrap gap-x-5 gap-y-2">
               <a href="/docs" className="hover:text-fd-foreground hover:underline">
                 Docs
