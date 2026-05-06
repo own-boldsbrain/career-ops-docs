@@ -19,7 +19,7 @@ export default async function Layout({ children }: LayoutProps<'/'>) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
         <RootProvider>{children}</RootProvider>
-        <footer className="mt-12 border-t py-8 text-sm text-fd-muted-foreground">
+        <footer className="border-t py-8 text-sm text-fd-muted-foreground">
           <div className="mx-auto flex w-full max-w-[1400px] flex-col gap-4 px-6 md:flex-row md:items-center md:justify-between md:px-12">
             <p>
               Built by{' '}

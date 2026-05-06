@@ -500,23 +500,23 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* Final CTA — contained brand panel. Distinguishes itself from the
-          frameless community section above with a more saturated brand
-          gradient, a brand-tinted border, larger rounded corners, and
-          generous padding. The contrast between "open prose moment" and
-          "contained action moment" creates a deliberate rhythm. */}
-      <div className="mx-auto w-full max-w-[1400px] px-6 md:px-12 mt-16 lg:mt-24">
-        <div className="rounded-3xl border border-brand/20 bg-gradient-to-br from-brand/15 via-brand/5 to-transparent p-12 lg:p-20 text-center">
-          <p
-            className={`${instrumentSerifRegular.className} text-3xl md:text-4xl xl:text-5xl tracking-tight mb-8`}
-          >
-            Ready to filter offers, not get filtered?
-          </p>
-          <Link href="/docs" className={cn(buttonVariants(), 'text-base px-8 py-3.5')}>
-            Get Started
-          </Link>
-        </div>
-      </div>
+      {/* Final CTA — full-bleed brand gradient. No card, no border, no
+          rounded corners — the gradient (transparent top → brand/10 bottom)
+          extends edge-to-edge and bleeds straight into the footer's
+          border-t (the home layout's <main> padding-bottom is overridden
+          to 0 in global.css to make the colour land exactly at the
+          hairline). The brand-orange button is the single saturated
+          focal point; generous vertical padding carries the weight. */}
+      <section className="mt-16 lg:mt-24 py-20 lg:py-28 text-center px-6 bg-gradient-to-b from-transparent via-brand/5 to-brand/10">
+        <p
+          className={`${instrumentSerifRegular.className} text-3xl md:text-4xl xl:text-5xl tracking-tight mb-8 max-w-3xl mx-auto`}
+        >
+          Ready to filter offers, not get filtered?
+        </p>
+        <Link href="/docs" className={cn(buttonVariants(), 'text-base px-8 py-3.5')}>
+          Get Started
+        </Link>
+      </section>
     </>
   );
 }
