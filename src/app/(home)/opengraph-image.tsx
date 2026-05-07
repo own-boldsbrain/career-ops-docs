@@ -10,7 +10,13 @@ import { join } from 'node:path';
 export const runtime = 'nodejs';
 
 export const size = { width: 1200, height: 630 };
-export const contentType = 'image/jpeg';
+// PNG output (lossless) so the brand mark and wordmark stay crisp when
+// LinkedIn / X / Slack re-compress the image for their own caches.
+// Stacking JPEG quantization on top of ImageResponse's own JPEG output
+// produced visibly blurry text and aura artefacts; PNG keeps the strip
+// sharp at any downscale and the file size is still reasonable
+// (~400-500 KB) for an OG card.
+export const contentType = 'image/png';
 export const alt = 'career-ops — You got the job. And it didn\'t cost you a thing.';
 
 // OG image — hero banner from the core repo (docs/hero-banner.jpg) as
