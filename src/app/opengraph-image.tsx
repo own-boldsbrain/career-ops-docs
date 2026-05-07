@@ -1,31 +1,35 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
+// Force Node runtime so we can read the banner from the filesystem
+// (public/og-banner.jpg) at build time. The default edge runtime would
+// require an HTTP fetch, but during the production build the site is
+// not yet deployed — the fetch returns 404 HTML and ImageResponse
+// throws "Invalid JPEG".
+export const runtime = 'nodejs';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/jpeg';
 export const alt = 'career-ops — You got the job. And it didn\'t cost you a thing.';
 
 // OG image — hero banner from the core repo (docs/hero-banner.jpg) as
-// background + a quiet brand strip in the bottom-right corner with the
-// "co" mark, wordmark and the canonical URL. Reusing the core's hero
-// banner keeps the visual identity continuous between repo and site —
-// the same image people see in the README is what they share. The
-// brand strip adds identity recognition (mark same as favicon/navbar)
-// and an implicit CTA via the URL.
+// background + a quiet brand strip centered on the bottom edge with
+// the "co" mark and "career-ops.org". Reusing the core's hero banner
+// keeps the visual identity continuous between repo and site — the
+// same image people see in the README is what they share. The brand
+// strip adds identity recognition (mark same as favicon/navbar) and
+// an implicit CTA via the URL.
 export default async function OG() {
-  // Fetch the optimized banner from /public (resolved at build/edge).
-  const baseUrl =
-    process.env.NODE_ENV === 'production'
-      ? 'https://career-ops.org'
-      : 'http://localhost:3000';
-
-  const [bannerData, instrumentSerifData] = await Promise.all([
-    fetch(`${baseUrl}/og-banner.jpg`).then((r) => r.arrayBuffer()),
+  const bannerPath = join(process.cwd(), 'public', 'og-banner.jpg');
+  const [bannerBuffer, instrumentSerifData] = await Promise.all([
+    readFile(bannerPath),
     fetch(
       'https://fonts.gstatic.com/s/instrumentserif/v5/jizBRFtNs2ka5fXjeivQ4LroWlx-2zI.ttf',
     ).then((r) => r.arrayBuffer()),
   ]);
 
-  const bannerDataUri = `data:image/jpeg;base64,${Buffer.from(bannerData).toString('base64')}`;
+  const bannerDataUri = `data:image/jpeg;base64,${bannerBuffer.toString('base64')}`;
 
   const brand = 'hsl(26, 73%, 51%)';
 
