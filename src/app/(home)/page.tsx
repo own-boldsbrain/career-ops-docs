@@ -252,8 +252,8 @@ export default async function HomePage() {
             />
             <span>
               <a
-                href="https://santifer.io/about"
-                rel="me noreferrer noopener"
+                href="/about"
+                rel="author"
                 className="text-fd-muted-foreground hover:text-fd-foreground hover:underline"
               >
                 Santiago Fernández de Valderrama
@@ -469,9 +469,8 @@ export default async function HomePage() {
           <p className="max-w-2xl text-fd-muted-foreground text-base lg:text-lg leading-relaxed">
             Built by{' '}
             <a
-              href="https://santifer.io/about"
-              target="_blank"
-              rel="me noreferrer noopener"
+              href="/about"
+              rel="author"
               className="text-fd-foreground font-medium hover:underline"
             >
               Santiago Fernández de Valderrama

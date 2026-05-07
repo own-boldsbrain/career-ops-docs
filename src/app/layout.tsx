@@ -30,8 +30,8 @@ export default async function Layout({ children }: LayoutProps<'/'>) {
                 <p>
                   Built by{' '}
                   <a
-                    href="https://santifer.io/about"
-                    rel="me author noreferrer noopener"
+                    href="/about"
+                    rel="author"
                     className="text-fd-foreground hover:underline"
                   >
                     Santiago Fernández de Valderrama
