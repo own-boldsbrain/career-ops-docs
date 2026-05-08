@@ -536,7 +536,7 @@ export default async function HomePage() {
           Ready to filter offers, not get filtered?
         </p>
         <Link href="/docs" className={cn(buttonVariants(), 'text-base px-8 py-3.5')}>
-          Get Started
+          Your turn
         </Link>
 
         {/* Subordinate alternative for visitors not ready to install today.
