@@ -208,6 +208,12 @@ export function methodologySchema() {
         mainEntityOfPage: 'https://career-ops.org/methodology',
         inLanguage: 'en',
         keywords: DEFINED_TERMS.map((t) => t.name),
+        image: {
+          '@type': 'ImageObject',
+          url: 'https://career-ops.org/og-banner.jpg',
+          width: 1200,
+          height: 630,
+        },
       },
       {
         '@type': 'FAQPage',

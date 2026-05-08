@@ -56,6 +56,8 @@ export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): P
   return {
     title: page.data.title,
     description: page.data.description,
+    alternates: { canonical: `https://career-ops.org${page.url}` },
+    robots: { index: true, follow: true },
     openGraph: {
       images: getPageImage(page).url,
     },

@@ -37,6 +37,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}/`,
       lastModified: lastModFor('src/app/(home)/page.tsx'),
     },
+    {
+      url: `${SITE_URL}/about`,
+      lastModified: lastModFor('src/app/about/page.tsx'),
+    },
+    {
+      url: `${SITE_URL}/methodology`,
+      lastModified: lastModFor('src/app/methodology/page.tsx'),
+    },
+    {
+      url: `${SITE_URL}/privacy`,
+      lastModified: lastModFor('src/app/privacy/page.tsx'),
+    },
   ];
 
   for (const page of source.getPages()) {
