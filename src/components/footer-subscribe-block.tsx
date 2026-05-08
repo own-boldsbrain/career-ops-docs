@@ -3,16 +3,13 @@
 import { usePathname } from 'next/navigation';
 import { SubscribeForm } from './subscribe-form';
 
-// Hides the footer subscribe block on pages where it doesn't fit the
-// reading context: the home page (form already integrated into the
-// install CTA above), the legal /privacy page (asking for subscription
-// inside a privacy doc reads off), and /subscribed (the user just
-// confirmed — re-asking is noise).
-const HIDDEN_PATHS = new Set(['/', '/privacy', '/subscribed']);
-
+// Footer subscribe form lives on /docs/** only. Standalone pages (/, /about,
+// /methodology, /privacy, /subscribed) feel off-brand asking for an email
+// in the footer chrome — the home has its own integrated CTA, the others
+// are reading contexts where the ask doesn't fit.
 export function FooterSubscribeBlock() {
   const pathname = usePathname();
-  if (HIDDEN_PATHS.has(pathname)) return null;
+  if (!pathname.startsWith('/docs')) return null;
 
   return (
     <>

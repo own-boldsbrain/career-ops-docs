@@ -475,7 +475,18 @@ export default async function HomePage() {
             >
               Santiago Fernández de Valderrama
             </a>{' '}
-            after evaluating 740 job listings. Now powered by the community.
+            after evaluating 740 job listings.
+            <br />
+            The full scoring methodology is{' '}
+            <a
+              href="/methodology"
+              className="text-fd-foreground hover:underline underline-offset-2"
+            >
+              published
+            </a>
+            .
+            <br />
+            Now powered by the community.
           </p>
 
           <div className="flex flex-row flex-wrap items-center justify-center mt-2">

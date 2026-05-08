@@ -11,7 +11,11 @@ const PERSON_ID = 'https://santifer.io/#person';
 // sameAs URLs — Santiago's verified profiles across the web. Matches the
 // canonical list maintained on santifer.io. Wikidata Q138710224 is the
 // entity master; everything else points back to it via `equivalentClass`.
+// `santifer.io/about` is included alongside `Person.url` to explicitly
+// map this local ProfilePage back to the canonical entity hub on
+// santifer.io — belt-and-braces signal for Google's KG reconciliation.
 const PERSON_SAMEAS = [
+  'https://santifer.io/about',
   'https://www.linkedin.com/in/santifer',
   'https://github.com/santifer',
   'https://x.com/santifer',

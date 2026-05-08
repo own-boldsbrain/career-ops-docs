@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import { siteSchema } from '@/lib/schema';
 import { CoMark } from '@/components/co-mark';
 import { FooterSubscribeBlock } from '@/components/footer-subscribe-block';
+import { instrumentSerifRegular } from '@/lib/fonts';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,12 +22,12 @@ export default async function Layout({ children }: LayoutProps<'/'>) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
         <RootProvider>{children}</RootProvider>
-        <footer className="border-t text-sm text-fd-muted-foreground">
+        <footer className={`${instrumentSerifRegular.className} border-t text-lg text-fd-muted-foreground`}>
           <div className="mx-auto w-full max-w-[1400px] px-6 md:px-12">
             <FooterSubscribeBlock />
             <div className="flex flex-col gap-4 py-6 md:flex-row md:items-center md:justify-between">
               <div className="flex items-center gap-2.5">
-                <CoMark size={20} />
+                <CoMark size={28} />
                 <p>
                   Built by{' '}
                   <a
@@ -39,7 +40,7 @@ export default async function Layout({ children }: LayoutProps<'/'>) {
                   · Open source · MIT
                 </p>
               </div>
-              <nav className="flex flex-row flex-wrap gap-x-5 gap-y-2">
+              <nav className={`${inter.className} flex flex-row flex-wrap gap-x-5 gap-y-2 text-sm`}>
                 <a href="/docs" className="hover:text-fd-foreground hover:underline">
                   Docs
                 </a>
