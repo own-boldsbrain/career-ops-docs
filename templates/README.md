@@ -11,6 +11,7 @@ Changing a template is a deliberate act. Adding a new entry that uses an existin
 Generates the canonical 1200×630 split image for every `/compare/[slug]` page. Career-ops landing (dark mode) on the left, competitor landing on the right, dark/white split with 50px margins everywhere for breathing room.
 
 **The locked specification** (do not change per comparison):
+
 - Canvas: 1200 × 630 (Open Graph standard)
 - Left panel: 0–600px, background `#0a0a0a`
 - Right panel: 600–1200px, background `#ffffff`
@@ -21,11 +22,13 @@ Generates the canonical 1200×630 split image for every `/compare/[slug]` page. 
 - Sutil shadow: 50×14+0+8 with translucent black
 
 **Three things change per comparison:**
+
 1. Competitor display name (right wordmark)
 2. Competitor tagline (italic line under wordmark)
 3. Competitor screenshot (right panel image)
 
 **Usage:**
+
 ```bash
 ./templates/og-compare-generator.sh \
   <slug> \
@@ -41,12 +44,14 @@ Output: `public/og/compare/career-ops-vs-<slug>.jpg`.
 All competitor screenshots must match `templates/assets/screenshots/career-ops-home-dark.png` in viewport and orientation for visual parity.
 
 **Required capture spec:**
+
 - Viewport: **1280 × 900** (matches the career-ops capture)
 - Browser: any Chromium-based; Playwright recommended for reproducibility
 - Cookie banners and overlays: **dismissed before screenshot**
 - Format: PNG, full viewport (not full page)
 
 **Playwright workflow** (the one we use in this repo via the playwright MCP):
+
 ```
 browser_resize 1280x900
 browser_navigate https://competitor.example.com/
@@ -62,9 +67,11 @@ Save the resulting PNG to `templates/assets/screenshots/<competitor>-home-clean.
 1. Capture competitor screenshot per the spec above → save to `templates/assets/screenshots/`
 2. Append a new object to `src/lib/data/comparisons.json` with: `slug`, `competitor` block, `intro`, `features`, `verdict`, `faq`. Use the existing `career-ops-vs-jobscan` entry as the structural reference.
 3. Run the OG generator:
+
    ```bash
    ./templates/og-compare-generator.sh <slug> <Name> <screenshot-path> '<tagline>'
    ```
+
 4. Append the new URL to `.github/workflows/indexnow.yml` `urlList`.
 5. Build, typecheck, push.
 6. Sitemap auto-includes the new entry (driven by `comparisons.json`). Sustain page schema auto-handles the comparison schema (driven by the data).
