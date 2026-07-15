@@ -7,19 +7,22 @@
 ### Steps
 
 1. **Create a free PostHog account**
-   - Go to https://posthog.com → Get started → sign up
+   - Go to <https://posthog.com> → Get started → sign up
    - Free tier: 1M events/month
    - After signup, grab your **Project API Key** (`phc_xxxx`) from Project Settings
 
 2. **Install the Node SDK**
+
    ```bash
    npm install posthog-node
    ```
 
 3. **Add your key to Vercel env vars**
+
    ```bash
    vercel env add POSTHOG_KEY
    ```
+
    Paste your `phc_xxxx` key when prompted.
 
 4. **Wire up logging in the API route**
