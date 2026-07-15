@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { after } from 'next/server';
 import Image from 'next/image';
 import Link from 'next/link';
 import { instrumentSerif, instrumentSerifRegular } from '@/lib/fonts';
@@ -10,6 +11,7 @@ import {
 } from '@/lib/signatures';
 import { CAREEROPS_DEFINITION } from '@/lib/shared';
 import { ShareRow } from '@/components/manifesto/share-row';
+import { trackCertVia } from '@/lib/track';
 
 // Path-based share URL for a signature (signature-flywheel spec v2 §2).
 // Hash fragments never reach the server, so /manifesto#sig-x gives every
@@ -37,7 +39,10 @@ const CARD_BG = '#14100c';
 const INK = '#f4ede4';
 const AMBER = '#e08a44';
 
-type Props = { params: Promise<{ username: string }> };
+type Props = {
+  params: Promise<{ username: string }>;
+  searchParams?: Promise<{ fresh?: string; via?: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { username } = await params;
@@ -68,8 +73,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function SignatureSharePage({ params }: Props) {
+export default async function SignatureSharePage({
+  params,
+  searchParams,
+}: Props) {
   const { username } = await params;
+  const sp = (await searchParams) ?? {};
+  // SPEC-1b 'fresh' mode: the Ledger Bot links freshly-merged signers
+  // here with ?fresh=1 — proof first, artifact second, ONE ask. Without
+  // the param the certificate renders exactly as always.
+  const fresh = sp.fresh === '1';
+  // ?via={username} attribution on inbound share traffic: recorded
+  // server-side ONLY (never surfaced publicly, never in the ledger) as
+  // one private blob per event in careerops-analytics — durable layer
+  // approved 2026-07-15 (kill-rule needs 7-day CTR/k-factor). after()
+  // runs post-response and trackCertVia swallows failures: a Blob
+  // outage can never break the certificate flow.
+  if (sp.via) {
+    const via = String(sp.via);
+    after(() => trackCertVia(via, username.toLowerCase()));
+  }
   const sig = await findSignature(username);
 
   if (!sig) {
@@ -102,6 +125,34 @@ export default async function SignatureSharePage({ params }: Props) {
 
   return (
     <main className="mx-auto w-full max-w-2xl px-6 py-12 md:py-20">
+      {/* Proof first (fresh order: proof → artifact → one ask). */}
+      {fresh && (
+        <p className="mb-5 text-center text-xs text-fd-muted-foreground">
+          Your signature is a public commit in the{' '}
+          <a
+            href={SIGNATURES_GITHUB_URL}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline underline-offset-2"
+          >
+            career-ops repository
+          </a>
+          {sig.sourceUrl && (
+            <>
+              {' '}
+              ·{' '}
+              <a
+                href={sig.sourceUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="underline underline-offset-2"
+              >
+                Source ↗
+              </a>
+            </>
+          )}
+        </p>
+      )}
       {/* The certificate — visually the OG card, as a page. */}
       <div
         className="rounded-2xl px-5 py-5 md:px-6 md:py-6"
@@ -163,21 +214,25 @@ export default async function SignatureSharePage({ params }: Props) {
             career-ops.org/manifesto
           </p>
 
-          <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/manifesto"
-              className="w-full sm:w-auto rounded-lg px-5 py-2.5 text-sm font-medium"
-              style={{ backgroundColor: INK, color: CARD_BG }}
-            >
-              Read the manifesto →
-            </Link>
-            <Link
-              href="/manifesto#how-to-sign"
-              className="w-full sm:w-auto rounded-lg border border-[rgba(244,237,228,0.3)] px-5 py-2.5 text-sm font-medium text-[rgba(244,237,228,0.9)]"
-            >
-              Add your signature
-            </Link>
-          </div>
+          {/* Fresh mode carries exactly ONE ask (the send-your-certificate
+              block below the card) — the navigation CTAs would compete. */}
+          {!fresh && (
+            <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Link
+                href="/manifesto"
+                className="w-full sm:w-auto rounded-lg px-5 py-2.5 text-sm font-medium"
+                style={{ backgroundColor: INK, color: CARD_BG }}
+              >
+                Read the manifesto →
+              </Link>
+              <Link
+                href="/manifesto#how-to-sign"
+                className="w-full sm:w-auto rounded-lg border border-[rgba(244,237,228,0.3)] px-5 py-2.5 text-sm font-medium text-[rgba(244,237,228,0.9)]"
+              >
+                Add your signature
+              </Link>
+            </div>
+          )}
 
           {/* Native-image escape hatch: platforms where links die (IG,
               WhatsApp, stories) get the card as a file, verification URL
@@ -204,11 +259,20 @@ export default async function SignatureSharePage({ params }: Props) {
         </div>
       </div>
 
+      {fresh && (
+        <p className="mt-6 text-center text-sm text-fd-foreground/90">
+          know one person who needs this? send them your certificate, not
+          ours.
+        </p>
+      )}
       <ShareRow
         url={`https://career-ops.org/manifesto/s/${sig.username.toLowerCase()}`}
         ordinal={sig.ordinal}
+        variant={fresh ? 'fresh' : 'default'}
+        viaUser={sig.username.toLowerCase()}
       />
 
+      {!fresh && (
       <p className="mt-6 text-center text-xs text-fd-muted-foreground">
         Every signature is a public commit in the{' '}
         <a
@@ -237,6 +301,7 @@ export default async function SignatureSharePage({ params }: Props) {
           </>
         )}
       </p>
+      )}
     </main>
   );
 }
